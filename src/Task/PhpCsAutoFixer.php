@@ -12,7 +12,7 @@ use GrumPHP\Task\PhpCsFixer;
 /**
  * Php-cs-fixer task.
  */
-class PHPCSAutoFixer extends PhpCsFixer
+class PhpCsAutoFixer extends PhpCsFixer
 {
     /**
      * @return string

@@ -34,7 +34,7 @@ To use the autofixer, add the following piece of code to your projectsroot `grum
 ```yml
 services:
     task.php_cs_auto_fixer:
-        class: Wearejust\Task\PHPCSAutoFixer
+        class: Wearejust\GrumPHPExtra\Task\PhpCsAutoFixer
         arguments:
           - '@config'
           - '@process_builder'
