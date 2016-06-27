@@ -1,0 +1,21 @@
+{
+    "name": "wearejust/grumphp-extra-tasks",
+    "description": "A set of extra tasks for grumphp",
+    "type": "library",
+    "require": {
+        "phpro/grumphp": "^0.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wearejust\\GrumPHPExtra": "wearejust/src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cees van Egmond",
+            "email": "cees.vanegmond@wearejust.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
