@@ -8,7 +8,7 @@ Add this package using composer, firstly add the packages repository
   Then, require the this repository
 
 ```json
-	composer require wearejust/grumphp-extra-tasks
+	composer require --dev wearejust/grumphp-extra-tasks
 ```
 
 ##Usage
