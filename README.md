@@ -27,21 +27,8 @@ parameters:
             fixers: []
             level: ~
             verbose: true
+    extensions:
+        - Wearejust\GrumPHPExtra\Extension\Loader
 ```
-
-To use the autofixer, add the following piece of code to your projectsroot `grumphp.yml` file.
-
-```yml
-services:
-    task.php_cs_auto_fixer:
-        class: Wearejust\GrumPHPExtra\Task\PhpCsAutoFixer
-        arguments:
-          - '@config'
-          - '@process_builder'
-          - '@formatter.php_cs_fixer'
-        tags:
-          - {name: grumphp.task, config: php_cs_auto_fixer}
-```
-
 ##License
 This package is licensed under the MIT License.  		
