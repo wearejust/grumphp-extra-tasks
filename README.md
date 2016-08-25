@@ -22,7 +22,7 @@ The configuration of this custom task is the same as the already [existing](http
 parameters:
     tasks:
         php_cs_auto_fixer:
-            config_file: ~
+            config_file: .php_cs
             config: ~
             fixers: []
             level: ~
