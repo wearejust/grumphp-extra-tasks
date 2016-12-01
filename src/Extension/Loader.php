@@ -16,6 +16,7 @@ class Loader implements ExtensionInterface
         $container->register('task.php_cs_auto_fixer', PhpCsAutoFixer::class)
             ->addArgument($container->get('config'))
             ->addArgument($container->get('process_builder'))
+            ->addArgument($container->get('async_process_runner'))            
             ->addArgument($container->get('formatter.php_cs_fixer'))
             ->addTag('grumphp.task', ['config' => 'php_cs_auto_fixer']);
     }
