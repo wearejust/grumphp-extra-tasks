@@ -16,7 +16,9 @@
     "require": {
         "php": ">=5.4",
         "phpro/grumphp": "^0.10",
-        "friendsofphp/php-cs-fixer": "~1"
+        "friendsofphp/php-cs-fixer": "~1",
+        "ext-SimpleXML": "*",
+        "phpdocumentor/phpdocumentor": "2.*"
     },
     "license": "MIT",
     "minimum-stability": "stable"
