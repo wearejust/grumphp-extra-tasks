@@ -15,10 +15,12 @@
     },
     "require": {
         "php": ">=5.4",
-        "phpro/grumphp": "^0.10",
-        "friendsofphp/php-cs-fixer": "~1",
-        "ext-SimpleXML": "*",
-        "phpdocumentor/phpdocumentor": "2.*"
+        "phpro/grumphp": "^0.11"
+    },
+    "suggest": {
+        "friendsofphp/php-cs-fixer": "Allow auto fixing using PHP-CS-FIXER (v1 or v2).",
+        "phpdocumentor/phpdocumentor": "Allow to generate phpDoc if necessary (and add it) before commit",
+        "ext-SimpleXML": "Allow phpdocumentor/phpdocumentor to behave correctly"
     },
     "license": "MIT",
     "minimum-stability": "stable"

@@ -31,6 +31,28 @@ parameters:
         - Wearejust\GrumPHPExtra\Extension\Loader
 ```
 
+### PhpCsAutoFixerV2
+In this main package it is not possible to use the php-cs-fixer [to auto fix your files according to your config](https://github.com/phpro/grumphp/issues/110). This package adds this missing feature, but for php-cs-fixerv2
+
+The configuration of this custom task is the same as the already [existing](https://github.com/phpro/grumphp/blob/master/doc/tasks/phpcsfixer2.md) task, only specify the new `php_cs_auto_fixerv2` configuration key. For example:
+
+```yaml
+parameters:
+    tasks:
+        php_cs_auto_fixerv2:
+            allow_risky: false
+            cache_file: ~
+            config: ~
+            rules: []
+            using_cache: true
+            path_mode: ~
+            verbose: true
+            diff: false
+            triggered_by: ['php']
+    extensions:
+        - Wearejust\GrumPHPExtra\Extension\Loader
+```
+
 ### Phpdoc
 In this main package there is no phpdoc tasks [to generate phpDoc if necessary (and add it) before commit](https://github.com/phpro/grumphp/pull/253). This package adds this missing feature.
 To use this task, just specify if inside grumphp.yml, in `tasks:`section. Do not forget to specify the loader in extension.

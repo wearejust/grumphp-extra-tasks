@@ -5,6 +5,7 @@ namespace Wearejust\GrumPHPExtra\Extension;
 use GrumPHP\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wearejust\GrumPHPExtra\Task\PhpCsAutoFixer;
+use Wearejust\GrumPHPExtra\Task\PhpCsAutoFixerV2;
 use Wearejust\GrumPHPExtra\Task\Phpdoc;
 
 class Loader implements ExtensionInterface
@@ -20,6 +21,13 @@ class Loader implements ExtensionInterface
             ->addArgument($container->get('async_process_runner'))
             ->addArgument($container->get('formatter.php_cs_fixer'))
             ->addTag('grumphp.task', ['config' => 'php_cs_auto_fixer']);
+            
+        $container->register('task.php_cs_auto_fixerv2', PhpCsAutoFixerV2::class)
+            ->addArgument($container->get('config'))
+            ->addArgument($container->get('process_builder'))
+            ->addArgument($container->get('async_process_runner'))
+            ->addArgument($container->get('formatter.php_cs_fixer'))
+            ->addTag('grumphp.task', ['config' => 'php_cs_auto_fixerv2']);
 
         $container->register('task.phpdoc', Phpdoc::class)
             ->addArgument($container->get('config'))
