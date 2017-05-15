@@ -35,6 +35,35 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
 
         $this->formatter->resetCounter();
 
+        $arguments = $this->createProcess($config, true);
+
+        if ($context instanceof RunContext && $config['config'] !== null) {
+            $result = $this->runOnAllFiles($context, $arguments);
+        }else {
+            $result = $this->runOnChangedFiles($context, $arguments, $files);
+        }
+
+        if ($result->hasFailed()) {
+            $arguments = $this->createProcess($config, false);
+
+            if ($context instanceof RunContext && $config['config'] !== null) {
+                $this->runOnAllFiles($context, $arguments);
+            }else {
+                $this->runOnChangedFiles($context, $arguments, $files);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param      $config
+     * @param bool $dryRun
+     *
+     * @return \GrumPHP\Collection\ProcessArgumentsCollection
+     */
+    private function createProcess($config, $dryRun)
+    {
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
         $arguments->addOptionalArgument('--allow-risky=%s', $config['allow_risky'] ? 'yes' : 'no');
@@ -53,12 +82,9 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
         $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
-        $arguments->add('fix');
+        $arguments->addOptionalArgument('--dry-run', $dryRun);
 
-        if ($context instanceof RunContext && $config['config'] !== null) {
-            return $this->runOnAllFiles($context, $arguments);
-        }
-
-        return $this->runOnChangedFiles($context, $arguments, $files);
+        return $arguments;
     }
+
 }
