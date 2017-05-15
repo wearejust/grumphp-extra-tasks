@@ -83,6 +83,7 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
         $arguments->addOptionalArgument('--dry-run', $dryRun);
+        $arguments->add('fix');
 
         return $arguments;
     }
