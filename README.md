@@ -1,7 +1,7 @@
-#GrumPHP Extra tasks
+# GrumPHP Extra tasks
 This package is brought alive to extend the functionalities of the already existing [GrumPHP](https://github.com/phpro/grumphp).
 
-##Installation
+## Installation
 Add this package using composer, firstly add the packages repository
 
 
@@ -11,7 +11,7 @@ Add this package using composer, firstly add the packages repository
 	composer require --dev wearejust/grumphp-extra-tasks
 ```
 
-##Usage
+## Usage
 
 ### PhpCsAutoFixer
 In this main package it is not possible to use the php-cs-fixer [to auto fix your files according to your config](https://github.com/phpro/grumphp/issues/110). This package adds this missing feature.
