@@ -51,6 +51,8 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
             }else {
                 $this->runOnChangedFiles($context, $arguments, $files);
             }
+
+            $result = TaskResult::createNonBlockingFailed($this, $result->getContext(), $result->getMessage());
         }
 
         return $result;
