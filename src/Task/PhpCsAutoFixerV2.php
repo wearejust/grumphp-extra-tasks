@@ -2,6 +2,8 @@
 
 namespace Wearejust\GrumPHPExtra\Task;
 
+use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
@@ -88,4 +90,18 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
         return $arguments;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function runOnChangedFiles(
+        ContextInterface $context,
+        ProcessArgumentsCollection $arguments,
+        FilesCollection $files
+    ) {
+        $result = parent::runOnChangedFiles($context, $arguments, $files);
+        foreach ($files as $file) {
+            exec(sprintf('git add %s', $file->getRelativePathname()));
+        }
+        return $result;
+    }
 }
