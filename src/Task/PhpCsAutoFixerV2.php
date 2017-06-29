@@ -104,6 +104,11 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
         foreach ($files as $file) {
             exec(sprintf('git add %s', $file->getRelativePathname()));
         }
+        if ($files) {
+            // @todo Why to this moment commit is already done,
+            // if the whole command is supposed to be run as pre-commit hook (i.e., before commit)?
+            exec('git commit --amend --no-edit');
+        }
         return $result;
     }
 }
