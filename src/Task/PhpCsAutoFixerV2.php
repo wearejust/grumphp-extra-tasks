@@ -6,8 +6,10 @@ use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\ContextInterface;
+use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpCsFixerV2;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -37,39 +39,46 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
 
         $this->formatter->resetCounter();
 
-        $arguments = $this->createProcess($config, true);
+        $process = $this->runProcess($context, $config, $files, true);
 
-        if ($context instanceof RunContext && $config['config'] !== null) {
-            $result = $this->runOnAllFiles($context, $arguments);
-        }else {
-            $result = $this->runOnChangedFiles($context, $arguments, $files);
+        if (!$process->isSuccessful()) {
+
+            $toAdd = $files->map(function(SplFileInfo $file) {
+                return $file->getRelativePathname();
+            });
+
+            $this->runProcess($context, $config, $files, false);
+
+            exec(sprintf('git add %s', implode(' ', $toAdd->toArray())));
+
+            $process = $this->runProcess($context, $config, $files, false);
+            $messages = [$this->formatter->format($process)];
+            $suggestions = [$this->formatter->formatSuggestion($process)];
+            $errorMessage = $this->formatter->formatErrorMessage($messages, $suggestions);
+
+            return TaskResult::createNonBlockingFailed($this, $context, $errorMessage);
         }
 
-        if ($result->hasFailed()) {
-            $arguments = $this->createProcess($config, false);
-
-            if ($context instanceof RunContext && $config['config'] !== null) {
-                $this->runOnAllFiles($context, $arguments);
-            }else {
-                $this->runOnChangedFiles($context, $arguments, $files);
-            }
-
-            $result = TaskResult::createNonBlockingFailed($this, $result->getContext(), $result->getMessage());
-        }
-
-        return $result;
+        return TaskResult::createPassed($this, $context);
     }
 
     /**
-     * @param      $config
-     * @param bool $dryRun
+     * @param \GrumPHP\Task\Context\ContextInterface $context
+     * @param                                        $config
+     * @param                                        $files
+     * @param                                        $dryRun
      *
      * @return \GrumPHP\Collection\ProcessArgumentsCollection
      */
-    private function createProcess($config, $dryRun)
+    private function runProcess(ContextInterface $context, $config, $files, $dryRun)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('php-cs-fixer');
         $arguments->add('--format=json');
+
+        if ($dryRun) {
+            $arguments->add('--dry-run');
+        }
+
         $arguments->addOptionalArgument('--allow-risky=%s', $config['allow_risky'] ? 'yes' : 'no');
         $arguments->addOptionalArgument('--cache-file=%s', $config['cache_file']);
         $arguments->addOptionalArgument('--config=%s', $config['config']);
@@ -82,28 +91,22 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
             ));
         }
 
+        $canUseIntersection = !($context instanceof RunContext) && $config['config_contains_finder'];
+
         $arguments->addOptionalArgument('--using-cache=%s', $config['using_cache'] ? 'yes' : 'no');
-        $arguments->addOptionalArgument('--path-mode=%s', $config['path_mode']);
+        $arguments->addOptionalArgument('--path-mode=intersection', $canUseIntersection);
         $arguments->addOptionalArgument('--verbose', $config['verbose']);
         $arguments->addOptionalArgument('--diff', $config['diff']);
-        $arguments->addOptionalArgument('--dry-run', $dryRun);
         $arguments->add('fix');
 
-        return $arguments;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function runOnChangedFiles(
-        ContextInterface $context,
-        ProcessArgumentsCollection $arguments,
-        FilesCollection $files
-    ) {
-        $result = parent::runOnChangedFiles($context, $arguments, $files);
-        foreach ($files as $file) {
-            exec(sprintf('git add %s', $file->getRelativePathname()));
+        if ($context instanceof GitPreCommitContext || !$config['config_contains_finder']) {
+            $arguments->addFiles($files);
         }
-        return $result;
+
+        $process = $this->processBuilder->buildProcess($arguments);
+
+        $process->run();
+
+        return $process;
     }
 }
