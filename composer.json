@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=5.4",
-        "phpro/grumphp": "^0.12"
+        "phpro/grumphp": "~0.12"
     },
     "suggest": {
         "friendsofphp/php-cs-fixer": "Allow auto fixing using PHP-CS-FIXER (v1 or v2).",
