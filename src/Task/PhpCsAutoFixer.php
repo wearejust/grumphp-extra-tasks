@@ -3,6 +3,7 @@
 namespace Wearejust\GrumPHPExtra\Task;
 
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpCsFixer;
@@ -15,7 +16,7 @@ class PhpCsAutoFixer extends PhpCsFixer
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'php_cs_auto_fixer';
     }
@@ -23,7 +24,7 @@ class PhpCsAutoFixer extends PhpCsFixer
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $files = $context->getFiles()->name('*.php');
         if (0 === count($files)) {
