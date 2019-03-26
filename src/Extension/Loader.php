@@ -9,7 +9,6 @@ use Wearejust\GrumPHPExtra\Task\PhpCsAutoFixer;
 use Wearejust\GrumPHPExtra\Task\PhpCsAutoFixerV2;
 use Wearejust\GrumPHPExtra\Task\Phpdoc;
 
-
 class Loader implements ExtensionInterface
 {
     /**

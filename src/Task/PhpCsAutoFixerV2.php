@@ -2,15 +2,13 @@
 
 namespace Wearejust\GrumPHPExtra\Task;
 
-use GrumPHP\Collection\FilesCollection;
-use GrumPHP\Collection\ProcessArgumentsCollection;
 use GrumPHP\Runner\TaskResult;
+use GrumPHP\Runner\TaskResultInterface;
 use GrumPHP\Task\Context\ContextInterface;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use GrumPHP\Task\PhpCsFixerV2;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Php-cs-fixerv2 task.
@@ -20,16 +18,15 @@ class PhpCsAutoFixerV2 extends PhpCsFixerV2
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'php_cs_auto_fixerv2';
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResultInterface
     {
         $config = $this->getConfiguration();
         $files = $context->getFiles()->extensions($config['triggered_by']);
