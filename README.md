@@ -212,5 +212,5 @@ Disable ANSI output.
 **no_interaction**
 *Default: `null`*
 
-##License
+## License
 This package is licensed under the MIT License.  		
